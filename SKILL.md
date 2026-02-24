@@ -10,7 +10,7 @@ description: A cross-platform active workflow to develop code locally, automatic
 3. This skill operates in two distinct phases: **[Phase 1] Environment Detection & Setup** and **[Phase 2] Routine Execution**. 
 4. The ultimate goal of this workflow is to generate and rely on a `remote_context.md` file in the user's project codebase. Future Agents/Sessions ONLY need to read that context file to perform remote executions smoothly, eliminating the need to ask for passwords or server details repeatedly.
 5. **DO NOT POLLUTE THE WORKSPACE:** If you need to write any custom sync scripts (like a custom Python script using `paramiko` for Windows), you MUST place those scripts inside a hidden `.remote_sync_scripts/` directory within the user's project. Do NOT pollute their main software or model directories with our utility scripts.
-6. **WORKSPACE DIRECTORY STANDARDIZATION:** In an empty workspace, enforce a clean structure: the skill itself should be nested within `skill/antigravity-remote-sync/`, and all project code (pulled from remote and edited locally) MUST strictly reside in a sibling directory named `sync-hub/`.
+6. **WORKSPACE DIRECTORY STANDARDIZATION:** In an empty workspace, enforce a clean structure: the skill itself should be nested within `skill/antigravity-agent-remote-sync-skill/`, and all project code (pulled from remote and edited locally) MUST strictly reside in a sibling directory named `sync-hub/`.
 
 ---
 
