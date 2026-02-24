@@ -16,10 +16,14 @@ description: A cross-platform active workflow to develop code locally, automatic
 
 *Trigger this phase when the user asks to configure remote execution, or if you need to run code remotely but no `remote_context.md` exists in the local project.*
 
-### Step 1. Collect Mission-Critical Information 
-First, explicitly remind the user: *"This workflow syncs strictly from LOCAL to REMOTE. If your project programs or website backbones already exist on the server, please manually download them to this local environment before we begin. You can use native `scp`, download a zip archive, or bring the whole project over by any other means. Of course, remember there is no need to move large files (like heavy datasets or model weights). (If you are developing a project from scratch here locally, you can ignore this step!)"*
+### Step 1. Check Local Directory & Fetch Remote Project (If Needed)
+Check if the local directory is practically empty (e.g., only containing `.git` or `README`). If it is empty:
+1. Ask the user: *"Your local directory seems empty. Do you have an existing project on the remote server you want to pull down to start with? If so, please provide the server info and the remote project path."*
+2. If the user provides the server info, use SSH to check the size of the first-level folders in their remote directory (e.g., `ssh <user>@<host> "du -sh <remote_path>/*"`).
+3. Identify heavy folders (like `dataset/`, `models/`, large `.pt` files, etc.) and propose to the user what should be excluded from the download.
+4. Use `scp` (or `rsync --exclude`) to download the core code to the local machine while actively avoiding large files. **IMPORTANT: Ensure future syncs (Local -> Remote) will also be configured to ignore these large chunks, so as not to interact with or overwrite remote model weights.**
 
-Then, ask the user precisely for:
+If the local directory is NOT empty (or after the above fetch is complete), collect Mission-Critical Information:
 - **Target IP / Hostname & SSH Port** (default 22)
 - **Username & Authentication Info** (Password, or confirm if SSH Key configured)
 - **Target Working Directory** on the Remote Server

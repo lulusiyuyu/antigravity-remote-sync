@@ -16,16 +16,13 @@ Whether you are on Windows, WSL, or Mac, this skill handles environment detectio
 
 ---
 
-## ⚠️ READ BEFORE USE: Local First Architecture
+## ⚠️ Local First Architecture & Auto-Pull
 
-This workflow operates strictly on a **Local $\rightarrow$ Remote** sync paradigm. **It DOES NOT support syncing files from the Remote server back to Local.**
+This workflow primarily operates on a **Local $\rightarrow$ Remote** sync paradigm. However, if you are just starting and your local directory is practically empty, **the Agent can automatically pull your existing project from the remote server for you.**
 
-If you have an existing project on a remote server, **you MUST mutually pull the core code files to your local machine first.** 
-
-**Wait, what about huge files (Datasets, Models, Checkpoints)?**
-You **DO NOT** need to download massive files (like large datasets, huge models, or heavy database files) to your local machine. You only need to copy the core logic files. The Agent is smart enough to SSH into your remote directory, examine the file structure (like spotting a `datasets/` folder on the server), and adapt its paths accordingly when writing the code. *(If you are developing a project completely from scratch locally, you can ignore all of this!)*
-
-*(Note: To prevent context overflow, the Agent will only perform a shallow exploration of the first-level directory structure using commands like `ls` rather than full recursive `tree` commands. It only needs to know that a `data/` folder exists, not every single file inside it.)*
+**What about huge files (Datasets, Models, Checkpoints)?**
+The Agent will automatically check your remote folder sizes before pulling. It will suggest excluding massive folders (like `dataset/`, model weights, heavy database files) from being downloaded. You only pull the core codebase! 
+Furthermore, when the Agent syncs your updated code *back* to the server, it will be configured with ignore rules, ensuring your remote model weights are perfectly safe and entirely untouched.
 
 ---
 
