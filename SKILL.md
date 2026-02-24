@@ -30,14 +30,19 @@ If the local directory is NOT empty (or after the above fetch is complete), coll
 
 *(Note: Strongly encourage the user to configure SSH Keys for a seamless experience on pure Windows, as inline passwords via `scp` are not natively supported without external tools).*
 
-### Step 2. Actively Test the Local Environment
+### Step 2. Actively Test the Local Environment & Auto-Install Dependencies
 You must autonomously detect the environment you are currently running in. Use terminal commands:
 1. **OS Check**: `uname -a` (Linux/WSL) or `systeminfo` / `$PSVersionTable` (Windows).
 2. **Tool Check**: Test if `rsync --version`, `git --version`, `ssh -V`, `scp` are available.
+3. **Windows Native Auto-Completion**: If you detect a pure Windows environment (no WSL, no rsync):
+   - Proactively execute `winget install Python.Python.3` (if Python is not installed).
+   - Proactively execute `python -m pip install paramiko scp` (to install necessary SSH and SCP libraries).
+   - *This ensures the pure Windows environment has robust programmatic capabilities to handle SFTP syncing, password injection, and folder exclusions.*
 
 ### Step 3. Generate the Blueprint (`remote_context.md`)
 Using the template at `config/remote_context_template.md`, generate a customized `remote_context.md` file in the root of the user's current project codebase. 
-This file MUST contain the precise CLI commands (utilizing the scripts in the `scripts/` folder or native bash/powershell strings) that future agents will run to sync and execute code.
+This file MUST contain the precise CLI commands that future agents will run to sync and execute code. 
+**CRITICAL FOR WINDOWS**: If the environment is pure Windows, the generated sync command in the blueprint MUST prioritize using a customized Python script (leveraging the newly installed `paramiko`/`scp` libraries) rather than native `scp`. This completely solves the problem of native Windows OpenSSH failing to handle automated password inputs and large directory exclusions.
 
 ### Step 4. User Notification & Persistent SSH Command
 Tell the user two things clearly:
