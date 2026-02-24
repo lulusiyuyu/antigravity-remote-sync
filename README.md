@@ -1,4 +1,4 @@
-# AntiGravity Remote Sync (远程无缝执行技能) 🚀
+# 🤖 AI Agent Skill: AntiGravity Remote Sync (远程无缝执行) 🚀
 
 [🇨🇳 中文](README.md) | [🇬🇧 English](README_en.md)
 

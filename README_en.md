@@ -1,4 +1,4 @@
-# AntiGravity Remote Sync 🚀
+# 🤖 AI Agent Skill: AntiGravity Remote Sync 🚀
 
 [🇨🇳 中文](README.md) | [🇬🇧 English](README_en.md)
 
