@@ -10,12 +10,9 @@
 
 ## 🌟 Introduction
 
-When building complex applications, websites, or machine learning models, we often face this dilemma: **The local development environment provides the best IDE and coding experience, but execution typically requires a remote server** (whether it's for GPU access, networking, or deploying to a production Linux environment).
+**TL;DR: Let your AI Agent write code locally, then automatically sync and execute it on your remote server in one click.**
 
-This skill provides a structured workflow and script toolkit for an AI Agent to:
-1. Detect whether the current environment is Windows, WSL, Linux, or MacOS.
-2. Generate a `remote_context.md` that securely stores server information.
-3. Automatically sync code to the remote server and run it—creating a seamless local-to-remote execution loop.
+Whether you are on Windows, WSL, or Mac, this skill handles environment detection, connection setup (via `remote_context.md`), and code delivery for you. Focus on guiding the agent locally while running heavy computations or deployments remotely.
 
 ---
 
