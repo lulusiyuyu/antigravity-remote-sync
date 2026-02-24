@@ -10,6 +10,7 @@ description: A cross-platform active workflow to develop code locally, automatic
 3. This skill operates in two distinct phases: **[Phase 1] Environment Detection & Setup** and **[Phase 2] Routine Execution**. 
 4. The ultimate goal of this workflow is to generate and rely on a `remote_context.md` file in the user's project codebase. Future Agents/Sessions ONLY need to read that context file to perform remote executions smoothly, eliminating the need to ask for passwords or server details repeatedly.
 5. **DO NOT POLLUTE THE WORKSPACE:** If you need to write any custom sync scripts (like a custom Python script using `paramiko` for Windows), you MUST place those scripts inside a hidden `.remote_sync_scripts/` directory within the user's project. Do NOT pollute their main software or model directories with our utility scripts.
+6. **WORKSPACE DIRECTORY STANDARDIZATION:** In an empty workspace, enforce a clean structure: the skill itself should be nested within `skill/antigravity-remote-sync/`, and all project code (pulled from remote and edited locally) MUST strictly reside in a sibling directory named `sync-hub/`.
 
 ---
 
@@ -18,11 +19,12 @@ description: A cross-platform active workflow to develop code locally, automatic
 *Trigger this phase when the user asks to configure remote execution, or if you need to run code remotely but no `remote_context.md` exists in the local project.*
 
 ### Step 1. Check Local Directory & Fetch Remote Project (If Needed)
-Check if the local directory is practically empty (e.g., only containing `.git` or `README`). If it is empty:
-1. Ask the user: *"Your local directory seems empty. Do you have an existing project on the remote server you want to pull down to start with? If so, please provide the server info and the remote project path."*
-2. If the user provides the server info, use SSH to check the size of the first-level folders in their remote directory (e.g., `ssh <user>@<host> "du -sh <remote_path>/*"`).
-3. Identify heavy folders (like `dataset/`, `models/`, large `.pt` files, etc.) and propose to the user what should be excluded from the download.
-4. Use `scp` (or `rsync --exclude`) to download the core code to the local machine while actively avoiding large files. **IMPORTANT: Ensure future syncs (Local -> Remote) will also be configured to ignore these large chunks, so as not to interact with or overwrite remote model weights.**
+Check if the local directory is practically empty (e.g., only containing `.git`, `README`, or just the `skill/` folder). If it is empty:
+1. **Initialize Standardized Workspace**: Create a sibling directory named `sync-hub/` next to the `skill/` folder.
+2. Ask the user: *"Your local directory seems empty. Do you have an existing project on the remote server you want to pull down to start with? If so, please provide the server info and the remote project path."*
+3. If the user provides the server info, use SSH to check the size of the first-level folders in their remote directory (e.g., `ssh <user>@<host> "du -sh <remote_path>/*"`).
+4. Identify heavy folders (like `dataset/`, `models/`, large `.pt` files, etc.) and propose to the user what should be excluded from the download.
+5. Use `scp` (or `rsync --exclude`) to download the core code strictly into the **`sync-hub/`** directory while actively avoiding large files. **IMPORTANT: All future edits and Local -> Remote syncs MUST operate exclusively inside this `sync-hub/` directory, and ignore rules must protect remote model weights.**
 
 If the local directory is NOT empty (or after the above fetch is complete), collect Mission-Critical Information:
 - **Target IP / Hostname & SSH Port** (default 22)
